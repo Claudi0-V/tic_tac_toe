@@ -7,14 +7,5 @@ const gameBoard = (() => {
   const resetGame = () => _board = [0, 1, 2, 3, 4, 5, 6, 7, 8];
   const testWin = (currentPlay) => winningSets.some(arr => 
                         arr.every(index => _board[index] === currentPlay));
-  const showBoard = () => _board;
-  return {setInBoard, isInBoard, resetGame, testWin, showBoard};
+  return {setInBoard, isInBoard, resetGame, testWin};
 })() 
-
-// gameBoard.setInBoard(1, 'x');
-// gameBoard.setInBoard(0, 'x');
-// console.log(gameBoard.showBoard())
-// console.log(gameBoard.testWin('x'));
-// gameBoard.setInBoard(2, 'x');
-// console.log(gameBoard.showBoard())
-// console.log(gameBoard.testWin('x'));
