@@ -9,3 +9,15 @@ const gameBoard = (() => {
                         arr.every(index => _board[index] === currentPlay));
   return {setInBoard, isInBoard, resetGame, testWin};
 })() 
+
+const Player = (name, XorO) => {
+  let _player = name;
+  let _sing = XorO ? XorO:'X';
+  let _wins = 0
+
+  const playerName = () => _player;
+  const playerSign = () => _sign;
+  const setPlayerWin = () => _wins++
+  const getPlayerWins = () => _wins;
+  return  {playerName, playerSign, getPlayerWins, setPlayerWin}
+}
