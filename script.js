@@ -29,6 +29,7 @@ const gameUI = (() => {
   const newGame = document.querySelector('#new-game-button');
   const mainGame = document.querySelector('.main-game');
   const mainContainer = mainGame.parentNode;
+  const sendPlayersInfo = document.querySelector('.send-players-info')
 
   const winnerUI = (text) => document.querySelector('.winner').textContent = text;
   const playersUI = (arr) => { 
@@ -37,7 +38,6 @@ const gameUI = (() => {
       players.forEach((player, index) => player.textContent = arr[index].getPlayerName())
       playersWins.forEach((win, index) => win.textContent = arr[index].getPlayerWins());
   }
-  
   const resetInterface = () => gameCell.forEach(cell => cell.textContent = '');
   const displayAlert = (type, message) => {
     let alertDiv = document.createElement('div');
@@ -51,6 +51,13 @@ const gameUI = (() => {
     playersUI(game.SendPlayers())
     displayInfo.style.display = 'flex';
   }
+  sendPlayersInfo.addEventListener('click', () => {
+      let p1 = document.querySelector('#p1-name')
+      let p2 = document.querySelector('#p2-name')
+      game.setPlayersName(p1.value, 'X', p2.value, 'O');
+      document.querySelector('.players-info-container').style.display = 'none'
+    })
+
   gameCell.forEach(cell => cell.addEventListener('click', e => {
     let index = parseInt(e.target.dataset.value);
     if (board.isInBoard(index)) displayAlert("danger", "you can't play there!");
@@ -58,7 +65,7 @@ const gameUI = (() => {
       game.singleRound(e, index);
       e.target.textContent = game.sendCurrentPlayer().getPlayerSign();
     }
-  })  )
+  })  );
   newGame.addEventListener('click', () => {
     resetInterface();
     displayInfo.style.display = 'none';
@@ -68,14 +75,20 @@ const gameUI = (() => {
 })();
 
 const game = (() => {
-  let player1 = Player('Bob', 'X');
-  let player2 = Player('Anthony', 'O');
+  let player1;
+  let player2;
   let round = 0;
-  let currentPlayer = player2;
+  let currentPlayer;
 
+  console.log(currentPlayer)
   const sendCurrentPlayer = () => currentPlayer;
   const resetGame = () => {
     round = 0;
+    currentPlayer = player2;
+  }
+  const setPlayersName = (p1Name, p1Sing, p2Name, p2Sing ) => {
+    player1 = Player(p1Name, p1Sing);
+    player2 = Player(p2Name, p2Sing);
     currentPlayer = player2;
   }
   const SendPlayers = () => [player1, player2];
@@ -97,11 +110,9 @@ const game = (() => {
     round++
     if(round >= 9) {
       gameUI.displayAlert('danger',`It's a Draw`);
-
       setTimeout(() => endGame("It's a Draw"), 500)
     }
-
   }
 
-  return {singleRound,sendCurrentPlayer,resetGame, endGame, SendPlayers,}
+  return {singleRound,sendCurrentPlayer,resetGame, endGame, SendPlayers, setPlayersName}
 })();

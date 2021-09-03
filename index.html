@@ -11,21 +11,36 @@
 	<div class="main-container">
 		<div class="display-info">
 			<div class="game-info">
-				<div class="winner">Winner: Player1</div>
+				<div class="winner"></div>
 				<div class="score">
 					<div class="player-score">
-						<div class="info-span players">Player1</div>
-						<div class="player-win-count">1</div>
+						<div class="info-span players"></div>
+						<div class="player-win-count"></div>
 					</div>
 					<div class="info-span">Score</div>
 					<div class="player-score">
-						<div class="info-span players">Player2</div>
-						<div class="player-win-count">0</div>
+						<div class="info-span players"></div>
+						<div class="player-win-count"></div>
 					</div>
 				</div><!-- SCORE-->
 				<button id="new-game-button">New Game</button>
 			</div><!--GAME INFO-->
 		</div><!-- DISPLAY INFO-->
+		<div class="players-info-container">
+			<div class="players-info">
+				<div class="player-form">	
+					<label for="player1-name">Player1 Name:</label>
+					<input type="text" value="Player1" id="p1-name">
+				</div>
+				<div class="inbetween-player-forms">
+					<button class="send-players-info">Start Game</button>
+				</div>
+				<div class="player-form">
+					<label for="player1-name">Player2 Name:</label>
+					<input type="text" value="Player2" id="p2-name">
+				</div>
+			</div>
+		</div><!-- PLAYER-INFO-CONTAINER-->
 		<div class="top-container">
 			<h1>Tic Tac Toe</h1>
 		</div>
@@ -41,5 +56,6 @@
 			<div class="game-cell" data-value="8"></div>
 		</div>
 	</div>
+	
 </body>
 </html>
