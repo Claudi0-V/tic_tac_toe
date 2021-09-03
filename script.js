@@ -55,8 +55,8 @@ const gameUI = (() => {
     let index = parseInt(e.target.dataset.value);
     if (board.isInBoard(index)) displayAlert("danger", "you can't play there!");
     else {
-      e.target.textContent = game.sendCurrentPlayer().getPlayerSign();
       game.singleRound(e, index);
+      e.target.textContent = game.sendCurrentPlayer().getPlayerSign();
     }
   })  )
   newGame.addEventListener('click', () => {
@@ -71,12 +71,12 @@ const game = (() => {
   let player1 = Player('Bob', 'X');
   let player2 = Player('Anthony', 'O');
   let round = 0;
-  let currentPlayer = player1;
+  let currentPlayer = player2;
 
   const sendCurrentPlayer = () => currentPlayer;
   const resetGame = () => {
     round = 0;
-    currentPlayer = player1;
+    currentPlayer = player2;
   }
   const SendPlayers = () => [player1, player2];
   const endGame = (text) => {
@@ -85,6 +85,7 @@ const game = (() => {
     gameUI.displayEndGame(text)
   };
   const singleRound = (e, targetIndex) => {
+    currentPlayer = currentPlayer === player2 ? player1: player2
     const hand = currentPlayer.getPlayerSign();
     const index = targetIndex;
     board.setInBoard(index, hand);
@@ -93,13 +94,13 @@ const game = (() => {
       currentPlayer.setPlayerWin();
       setTimeout(() => endGame(`Winner: ${game.sendCurrentPlayer().getPlayerName()}`), 500)
     }
-    currentPlayer = currentPlayer === player1 ? player2: player1;
     round++
     if(round >= 9) {
       gameUI.displayAlert('danger',`It's a Draw`);
 
       setTimeout(() => endGame("It's a Draw"), 500)
     }
+
   }
 
   return {singleRound,sendCurrentPlayer,resetGame, endGame, SendPlayers,}
