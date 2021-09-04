@@ -55,6 +55,7 @@ const gameUI = (() => {
   if (board.testWin(sign)) {
      gameUI.displayAlert('win',`${game.sendCurrentPlayer().getName()} Won!`);
      game.sendCurrentPlayer().setWins();
+     board.resetBoard();
      setTimeout(() => game.endGame(`Winner: ${game.sendCurrentPlayer().getName()}`), 500)
 }}
   const winnerUI = (text) => document.querySelector('.winner').textContent = text;
@@ -110,6 +111,7 @@ const gameUI = (() => {
       game.changeCurrentPlayer()
       if(gameRound >= 9) {
       gameUI.displayAlert('danger',`It's a Draw`);
+      board.resetBoard();
       setTimeout(() => game.endGame("It's a Draw"), 500)
       }
     }
@@ -148,7 +150,6 @@ const game = (() => {
   const SendPlayers = () => [player1, player2];
   const endGame = (text) => {
     resetGame();
-    board.resetBoard();
     gameUI.displayEndGame(text)
   };
   const singleRound = (targetIndex, sign) => {
