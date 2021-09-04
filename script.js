@@ -18,7 +18,7 @@ const Player = (name, XorO) => {
 
   const getPlayerName = () => _player;
   const getPlayerSign = () => _sign;
-  const setPlayerWin = () => _wins++
+  const setPlayerWin = () => _wins++;
   const getPlayerWins = () => _wins;
   return  {getPlayerName, getPlayerSign, getPlayerWins, setPlayerWin}
 }
@@ -26,16 +26,17 @@ const Player = (name, XorO) => {
 const gameUI = (() => {
   const displayInfo = document.querySelector('.display-info');
   const gameCell = document.querySelectorAll('.game-cell');
-  const newGame = document.querySelector('#new-game-button');
+  const continueGame = document.querySelector('#continue-game-button');
   const mainGame = document.querySelector('.main-game');
   const mainContainer = mainGame.parentNode;
-  const sendPlayersInfo = document.querySelector('.send-players-info')
+  const sendPlayersInfo = document.querySelector('.send-players-info');
+  const newGame = document.querySelector('#new-game-button')
 
   const winnerUI = (text) => document.querySelector('.winner').textContent = text;
   const playersUI = (arr) => { 
       let players = document.querySelectorAll('.players');
       let playersWins = document.querySelectorAll('.player-win-count');
-      players.forEach((player, index) => player.textContent = arr[index].getPlayerName())
+      players.forEach((player, index) => player.textContent = arr[index].getPlayerName());
       playersWins.forEach((win, index) => win.textContent = arr[index].getPlayerWins());
   }
   const resetInterface = () => gameCell.forEach(cell => cell.textContent = '');
@@ -66,21 +67,25 @@ const gameUI = (() => {
       e.target.textContent = game.sendCurrentPlayer().getPlayerSign();
     }
   })  );
-  newGame.addEventListener('click', () => {
+  continueGame.addEventListener('click', () => {
     resetInterface();
     displayInfo.style.display = 'none';
   })
 
-  return {resetInterface, displayAlert, displayEndGame};
+  newGame.addEventListener('click', () => { 
+      displayInfo.style.display = 'none';
+      document.querySelector('.players-info-container').style.display = "flex";
+      resetInterface();
+  });
+  return {resetInterface, displayAlert, displayEndGame, playersUI,};
 })();
 
 const game = (() => {
-  let player1;
-  let player2;
+  let player1 = Player('Player1', 'X');
+  let player2 = Player('Player2', 'O');
   let round = 0;
-  let currentPlayer;
+  let currentPlayer = player2;
 
-  console.log(currentPlayer)
   const sendCurrentPlayer = () => currentPlayer;
   const resetGame = () => {
     round = 0;
@@ -90,6 +95,7 @@ const game = (() => {
     player1 = Player(p1Name, p1Sing);
     player2 = Player(p2Name, p2Sing);
     currentPlayer = player2;
+    gameUI.playersUI(game.SendPlayers());
   }
   const SendPlayers = () => [player1, player2];
   const endGame = (text) => {
@@ -116,3 +122,4 @@ const game = (() => {
 
   return {singleRound,sendCurrentPlayer,resetGame, endGame, SendPlayers, setPlayersName}
 })();
+

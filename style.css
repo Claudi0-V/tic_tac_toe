@@ -18,6 +18,7 @@ body {
 .top-container {
 	font-size: 2em;
 	margin-bottom: 1em;
+	
 }
 
 .main-game {
@@ -87,9 +88,13 @@ body {
 }
 
 .score {
+	font-size: 3em;
 	display: flex;
 	justify-content: space-around;
-	
+	align-items: center;
+	background-color: white;
+	padding: 10px 0px;
+	border-radius: 4px;
 }
 
 .player-score {
@@ -151,10 +156,38 @@ body {
 }
 
 .send-players-info {
-	font-size: 1.4em;
-	background-color: var(--soft-blue);
-	outline: none;
-	border: 1px solid black;
-	border-radius: 3px;
+	width: 100px;
+	font-size: 1.6em;
+	padding: 5px;
+	border: 2px solid black;
 	cursor: pointer;
+	background-color: white;
+  	border-color: #04AA6D;
+	color: green;
+}
+
+.send-players-info:hover {
+	background-color: #04AA6D;
+	color: white;
+}
+
+.game-status-buttons {
+	width: 80%;
+	text-align: center;
+}
+
+.game-status-buttons  button {
+	width: 100px;
+	font-size: 0.7em;
+	padding: 5px;
+	border: 2px solid black;
+	cursor: pointer;
+	background-color: white;
+  	border-color: #04AA6D;
+	color: green;
+}
+
+.game-status-buttons  button:hover {
+	background-color: #04AA6D;
+	color: white;
 }
