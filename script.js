@@ -16,11 +16,30 @@ const Player = (name, XorO) => {
   let _sign = XorO;
   let _wins = 0
 
-  const getPlayerName = () => _player;
-  const getPlayerSign = () => _sign;
-  const setPlayerWin = () => _wins++;
-  const getPlayerWins = () => _wins;
-  return  {getPlayerName, getPlayerSign, getPlayerWins, setPlayerWin}
+  const getName = () => _player;
+  const getSign = () => _sign;
+  const setWins = () => _wins++;
+  const getWins = () => _wins;
+  return  {getName, getSign, getWins, setWins}
+}
+
+const AI = () => {
+  let _sign = 'O'
+  let _wins = 0
+
+  const getName = () => "AI";
+  const getSign = () => _sign;
+  const setWins = () => _wins++;
+  const getWins = () => _wins;
+  const play = () => {
+    let hand;
+    do { 
+      hand = Math.floor(Math.random() * (8 - 0)) 
+    } 
+    while(board.isInBoard(hand));
+    return hand
+  }
+  return  {getName, getSign, getWins, setWins, play} 
 }
 
 const gameUI = (() => {
@@ -32,12 +51,18 @@ const gameUI = (() => {
   const sendPlayersInfo = document.querySelector('.send-players-info');
   const newGame = document.querySelector('#new-game-button')
 
+  const winUI = (sign) => {
+  if (board.testWin(sign)) {
+     gameUI.displayAlert('win',`${game.sendCurrentPlayer().getName()} Won!`);
+     game.sendCurrentPlayer().setWins();
+     setTimeout(() => game.endGame(`Winner: ${game.sendCurrentPlayer().getName()}`), 500)
+}}
   const winnerUI = (text) => document.querySelector('.winner').textContent = text;
   const playersUI = (arr) => { 
       let players = document.querySelectorAll('.players');
       let playersWins = document.querySelectorAll('.player-win-count');
-      players.forEach((player, index) => player.textContent = arr[index].getPlayerName());
-      playersWins.forEach((win, index) => win.textContent = arr[index].getPlayerWins());
+      players.forEach((player, index) => player.textContent = arr[index].getName());
+      playersWins.forEach((win, index) => win.textContent = arr[index].getWins());
   }
   const resetInterface = () => gameCell.forEach(cell => cell.textContent = '');
   const displayAlert = (type, message) => {
@@ -59,14 +84,37 @@ const gameUI = (() => {
       document.querySelector('.players-info-container').style.display = 'none'
     })
 
+
+
   gameCell.forEach(cell => cell.addEventListener('click', e => {
     let index = parseInt(e.target.dataset.value);
+    let currentSing;
     if (board.isInBoard(index)) displayAlert("danger", "you can't play there!");
     else {
-      game.singleRound(e, index);
-      e.target.textContent = game.sendCurrentPlayer().getPlayerSign();
+      let thisSing = game.sendCurrentPlayer().getSign();
+      currentSing = thisSing;
+      game.singleRound(index, thisSing);
+      e.target.textContent = thisSing;
+      let gameRound = game.sendRound();
+      let possibleAI = game.SendPlayers()[1]
+      winUI(currentSing)
+      if (possibleAI.getName() === 'AI' && gameRound < 9) {
+        game.changeCurrentPlayer()
+        let aiHand = possibleAI.play();
+        let aiIndex = document.querySelector(`[data-value="${aiHand}"]`);
+        game.singleRound(aiHand, possibleAI.getSign());
+        currentSing = possibleAI.getSign();
+        aiIndex.textContent = possibleAI.getSign();
+        winUI(currentSing)
+      };
+      game.changeCurrentPlayer()
+      if(gameRound >= 9) {
+      gameUI.displayAlert('danger',`It's a Draw`);
+      setTimeout(() => game.endGame("It's a Draw"), 500)
+      }
     }
-  })  );
+  }));
+
   continueGame.addEventListener('click', () => {
     resetInterface();
     displayInfo.style.display = 'none';
@@ -81,20 +129,20 @@ const gameUI = (() => {
 })();
 
 const game = (() => {
-  let player1 = Player('Player1', 'X');
-  let player2 = Player('Player2', 'O');
+  let player1 = Player('Player 1', 'X');
+  let player2 = AI();
   let round = 0;
-  let currentPlayer = player2;
-
+  let currentPlayer = player1;
+  
+  const sendRound = () => round;
   const sendCurrentPlayer = () => currentPlayer;
+  const changeCurrentPlayer = () => currentPlayer = currentPlayer === player2 ? player1 : player2;
   const resetGame = () => {
     round = 0;
-    currentPlayer = player2;
   }
   const setPlayersName = (p1Name, p1Sing, p2Name, p2Sing ) => {
     player1 = Player(p1Name, p1Sing);
-    player2 = Player(p2Name, p2Sing);
-    currentPlayer = player2;
+    player2 = p2Name === 'AI' ? AI() : Player(p2Name, p2Sing);
     gameUI.playersUI(game.SendPlayers());
   }
   const SendPlayers = () => [player1, player2];
@@ -103,23 +151,12 @@ const game = (() => {
     board.resetBoard();
     gameUI.displayEndGame(text)
   };
-  const singleRound = (e, targetIndex) => {
-    currentPlayer = currentPlayer === player2 ? player1: player2
-    const hand = currentPlayer.getPlayerSign();
+  const singleRound = (targetIndex, sign) => {
     const index = targetIndex;
-    board.setInBoard(index, hand);
-    if(board.testWin(hand)) {
-      gameUI.displayAlert('win',`${currentPlayer.getPlayerName()} Won!`);
-      currentPlayer.setPlayerWin();
-      setTimeout(() => endGame(`Winner: ${game.sendCurrentPlayer().getPlayerName()}`), 500)
-    }
+    board.setInBoard(index, sign);
     round++
-    if(round >= 9) {
-      gameUI.displayAlert('danger',`It's a Draw`);
-      setTimeout(() => endGame("It's a Draw"), 500)
-    }
+    ;
   }
 
-  return {singleRound,sendCurrentPlayer,resetGame, endGame, SendPlayers, setPlayersName}
+  return {singleRound,sendCurrentPlayer,resetGame, endGame, SendPlayers, setPlayersName, sendRound, changeCurrentPlayer,}
 })();
-
