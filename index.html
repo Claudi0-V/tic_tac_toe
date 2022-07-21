@@ -1,64 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Tic Tac Toe</title>
-	<script src="script.js" defer></script>
-	<link rel="stylesheet" href="style.css">
-</head>
-<body>
-	<div class="main-container">
-		<div class="score">
-					<div class="player-score">
-						<div class="info-span players">Player1</div>
-						<div class="player-win-count">0</div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Tic Tac Toe</title>
+		<script src="script.js" defer></script>
+		<link rel="stylesheet" href="style.css" />
+		<link
+			rel="apple-touch-icon"
+			sizes="57x57"
+			href="/favicon/apple-icon-57x57.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="60x60"
+			href="/favicon/apple-icon-60x60.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="72x72"
+			href="/favicon/apple-icon-72x72.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="76x76"
+			href="/favicon/apple-icon-76x76.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="114x114"
+			href="/favicon/apple-icon-114x114.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="120x120"
+			href="/favicon/apple-icon-120x120.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="144x144"
+			href="/favicon/apple-icon-144x144.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="152x152"
+			href="/favicon/apple-icon-152x152.png"
+		/>
+		<link
+			rel="apple-touch-icon"
+			sizes="180x180"
+			href="/favicon/apple-icon-180x180.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="192x192"
+			href="/favicon/android-icon-192x192.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="/favicon/favicon-32x32.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="96x96"
+			href="/favicon/favicon-96x96.png"
+		/>
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="16x16"
+			href="/favicon/favicon-16x16.png"
+		/>
+		<link rel="manifest" href="/favicon/manifest.json" />
+		<meta name="msapplication-TileColor" content="#ffffff" />
+		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
+		<meta name="theme-color" content="#ffffff" />
+	</head>
+	<body>
+		<div class="main-container">
+			<header class="score">
+				<div class="player-score p1-info">
+					<span class="info-span players">Player1</span>
+					<span class="player-win-count">0</span>
+				</div>
+				<span class="info-span score-span">Score</span>
+				<div class="player-score p2-info">
+					<span class="info-span players">Player2</span>
+					<span class="player-win-count">0</span>
+				</div>
+			</header>
+
+			<div class="display-info">
+				<div class="game-info">
+					<div class="winner"></div>
+					<div class="game-status-buttons">
+						<button id="continue-game-button">Continue</button>
+						<button id="new-game-button">New Game</button>
 					</div>
-					<div class="info-span">Score</div>
-					<div class="player-score">
-						<div class="info-span players">Player2</div>
-						<div class="player-win-count">0</div>
-					</div>
-		</div><!-- SCORE-->
-		<div class="display-info">
-			<div class="game-info">
-				<div class="winner"></div>
-				<div class="game-status-buttons">
-					<button id="continue-game-button">Continue</button>
-					<button id="new-game-button">New Game</button>
 				</div>
-			</div><!--GAME INFO-->
-		</div><!-- DISPLAY INFO-->
-		<div class="players-info-container">
-			<div class="players-info">
-				<div class="player-form">	
-					<label for="player1-name">Player1 Name:</label>
-					<input type="text" value="Player1" id="p1-name">
-				</div>
-				<div class="inbetween-player-forms">
-					<button class="send-players-info">Start Game</button>
-				</div>
-				<div class="player-form">
-					<label for="player1-name">Player2 Name:</label>
-					<input type="text" value="AI" id="p2-name">
-				</div>
+				<!--GAME INFO-->
 			</div>
-		</div><!-- PLAYER-INFO-CONTAINER-->
-		<div class="top-container">
-			<h1>Tic Tac Toe</h1>
+
+			<form class="players-info-container">
+				<div class="players-info">
+					<div class="player-form">
+						<label for="player1-name">Player 1 (You) Name:</label>
+						<input
+							type="text"
+							value="Player1"
+							id="p1-name"
+							maxlength="9"
+						/>
+					</div>
+					<fieldset>
+						<legend>Select the type of Player2:</legend>
+						<div class="player-type">
+							<input
+								type="radio"
+								id="p2Choice1"
+								name="p2Choice"
+								value="AI"
+								checked
+							/>
+							<label for="p2Choice1">🤖</label>
+							<input
+								type="radio"
+								id="p2Choice2"
+								name="p2Choice"
+								value="human"
+							/>
+							<label for="p2Choice2">👨‍🦱</label>
+						</div>
+					</fieldset>
+					<div class="player-form">
+						<label for="player1-name">Player2 Name:</label>
+						<input
+							type="text"
+							value="AI"
+							id="p2-name"
+							maxlength="9"
+						/>
+					</div>
+					<div class="inbetween-player-forms">
+						<button type="submit" class="send-players-info">
+							Start Game
+						</button>
+					</div>
+				</div>
+			</form>
+
+			<div class="top-container">
+				<h1>Tic Tac Toe</h1>
+			</div>
+			<main class="main-game">
+				<div class="game-cell" data-value="0"></div>
+				<div class="game-cell" data-value="1"></div>
+				<div class="game-cell" data-value="2"></div>
+				<div class="game-cell" data-value="3"></div>
+				<div class="game-cell" data-value="4"></div>
+				<div class="game-cell" data-value="5"></div>
+				<div class="game-cell" data-value="6"></div>
+				<div class="game-cell" data-value="7"></div>
+				<div class="game-cell" data-value="8"></div>
+			</main>
 		</div>
-		<div class="main-game">
-			<div class="game-cell" data-value="0"></div>
-			<div class="game-cell" data-value="1"></div>
-			<div class="game-cell" data-value="2"></div>
-			<div class="game-cell" data-value="3"></div>
-			<div class="game-cell" data-value="4"></div>
-			<div class="game-cell" data-value="5"></div>
-			<div class="game-cell" data-value="6"></div>
-			<div class="game-cell" data-value="7"></div>
-			<div class="game-cell" data-value="8"></div>
-		</div>
-	</div>
-	
-</body>
+	</body>
 </html>
