@@ -142,15 +142,17 @@ const gameUI = (() => {
 
   gameCells.forEach((cell, index) =>
     cell.addEventListener("click", (event) => {
-      if (board.isInBoard(index)) {
-        return gameUI.displayAlert("danger", "you can't play there!");
-      }
       if (game.getWaitFinishPlay()) {
         return gameUI.displayAlert(
           "danger",
           "you need to wait until the player finishes their turn"
         );
       }
+
+      if (board.isInBoard(index)) {
+        return gameUI.displayAlert("danger", "you can't play there!");
+      }
+
       game.gameFlow(event, index);
     })
   );
