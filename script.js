@@ -145,6 +145,12 @@ const gameUI = (() => {
       if (board.isInBoard(index)) {
         return gameUI.displayAlert("danger", "you can't play there!");
       }
+      if (game.getWaitFinishPlay()) {
+        return gameUI.displayAlert(
+          "danger",
+          "you need to wait until the player finishes their turn"
+        );
+      }
       game.gameFlow(event, index);
     })
   );
@@ -170,6 +176,7 @@ const game = (() => {
   let player2;
   let _round = 0;
   let _currentPlayer;
+  let _waitFinishPlay = false;
 
   const getRound = () => _round;
   const sendCurrentPlayer = () => _currentPlayer;
@@ -179,6 +186,7 @@ const game = (() => {
     (_currentPlayer = _currentPlayer === player2 ? player1 : player2);
 
   const resetGame = () => {
+    changeWaitFinishPlay(false);
     board.resetBoard();
     _round = 0;
   };
@@ -202,14 +210,16 @@ const game = (() => {
   };
 
   const hasAI = () => player1.getType() === "AI" || player2.getType() === "AI";
+  const changeWaitFinishPlay = (value) => (_waitFinishPlay = value);
+  const getWaitFinishPlay = () => _waitFinishPlay;
 
   const gameFlow = async ({ target }, index, player) => {
+    changeWaitFinishPlay(true);
     const currPlayer = player || game.sendCurrentPlayer();
     const sign = currPlayer.getSign();
     game.singleRound(index, sign);
     target.classList.add("puff-in-center");
     target.textContent = sign;
-    await sleep();
 
     if (board.isAWin(sign)) {
       currPlayer.increaseWins();
@@ -223,6 +233,7 @@ const game = (() => {
     }
 
     if (game.hasAI() && !player) {
+      await sleep();
       const aiHand = player2.play();
       const aiIndex = document.querySelector(`[data-value="${aiHand}"]`);
       return gameFlow({ target: aiIndex }, aiHand, player2);
@@ -230,6 +241,7 @@ const game = (() => {
     if (!game.hasAI()) {
       game.changeCurrentPlayer();
     }
+    changeWaitFinishPlay(false);
   };
 
   return {
@@ -243,5 +255,7 @@ const game = (() => {
     changeCurrentPlayer,
     gameFlow,
     hasAI,
+    changeWaitFinishPlay,
+    getWaitFinishPlay,
   };
 })();
